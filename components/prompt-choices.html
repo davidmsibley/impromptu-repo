@@ -1,0 +1,50 @@
+<link rel="import" href="http://polygit.org/components/polymer/polymer-element.html">
+<link rel="import" href="http://polygit.org/components/iron-ajax/iron-ajax.html">
+
+<dom-module id="prompt-choices">
+  <template>
+    <h2>{{title}}</h2>
+    <iron-ajax
+    auto
+    url="[[tsvUrl]]"
+    handle-as="text"
+    on-response="handleResponse"
+    debounce-duration="300"></iron-ajax>
+    <template is="dom-repeat" items="[[prompts]]" as="prompt">
+      <div>[[prompt]]</div>
+    </template>
+  </template>
+
+  <script>
+    // Define the class for a new element called custom-element
+    class PromptChoices extends Polymer.Element {
+      static get is() { return "prompt-choices"; }
+      static get properties() {
+        return {
+          title: {
+            type: String
+          },
+          tsvUrl: {
+            type: String
+          },
+          prompts: {
+            type: Array,
+            value: []
+          }
+        }
+      }
+      handleResponse(event) {
+        let result = [];
+        let respArray = event.detail.response.split('\n');
+        let i = 3;
+        while (i-- > 0) {
+          result.push(respArray[Math.floor(Math.random() * 1000) % respArray.length]);
+        }
+
+        this.set('prompts', result);
+      }
+    }
+    // Register the new element with the browser
+    customElements.define(PromptChoices.is, PromptChoices);
+  </script>
+</dom-module>
