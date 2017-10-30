@@ -36,9 +36,15 @@
       handleResponse(event) {
         let result = [];
         let respArray = event.detail.response.split('\n');
+
         let i = 3;
-        while (i-- > 0) {
-          result.push(respArray[Math.floor(Math.random() * 1000) % respArray.length]);
+        while (respArray.length > i && i-- > 0) {
+          let prompt = respArray[Math.floor(Math.random() * 1000) % respArray.length];
+          if (result.includes(prompt)) {
+            i++;
+          } else {
+            result.push(prompt);
+          }
         }
 
         this.set('prompts', result);
