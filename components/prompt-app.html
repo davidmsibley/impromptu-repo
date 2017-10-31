@@ -1,6 +1,8 @@
 <link rel="import" href="//polygit.org/components/polymer/polymer-element.html">
 <link rel="import" href="//polygit.org/components/iron-icons/iron-icons.html">
 <link rel="import" href="//polygit.org/components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="//polygit.org/components/paper-listbox/paper-listbox.html">
+<link rel="import" href="//polygit.org/components/paper-item/paper-item.html">
 <link rel="import" href="//polygit.org/components/app-layout/app-layout.html">
 
 <link rel="import" href="prompt-choices.html">
@@ -23,18 +25,43 @@
         </app-toolbar>
       </app-header>
     </app-header-layout>
-    <prompt-choices title="proverbs" tsv-url="https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=0&single=true&output=tsv"></prompt-choices>
-    <prompt-choices title="objects" tsv-url="https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=2103952916&single=true&output=tsv"></prompt-choices>
-    <prompt-choices title="abstract words" tsv-url="https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1125296434&single=true&output=tsv"></prompt-choices>
-    <prompt-choices title="events" tsv-url="https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1547289887&single=true&output=tsv"></prompt-choices>
-    <prompt-choices title="quotations" tsv-url="https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=634864725&single=true&output=tsv"></prompt-choices>
-    <prompt-choices title="famous people" tsv-url="https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1414675033&single=true&output=tsv"></prompt-choices>
+    <paper-listbox attr-for-selected="item-index" selected="{{itemIndex}}" fallback-selection="0">
+      <template is="dom-repeat" items="[[promptChoices]]">
+        <paper-item item-index="[[index]]">[[item.title]]</paper-item>
+      </template>
+    </paper-listbox>
+    <prompt-choices title="[[chosenPrompt.title]]" tsv-url="[[chosenPrompt.tsvUrl]]"></prompt-choices>
   </template>
 
   <script>
     // Define the class for a new element called custom-element
     class PromptApp extends Polymer.Element {
       static get is() { return "prompt-app"; }
+      static get properties() {
+        return {
+          itemIndex: {
+            type: Number
+          },
+          promptChoices: {
+            type: Array,
+            value: [
+              {title: 'proverbs', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=0&single=true&output=tsv'},
+              {title: 'objects', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=2103952916&single=true&output=tsv'},
+              {title: 'abstract words', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1125296434&single=true&output=tsv'},
+              {title: 'events', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1547289887&single=true&output=tsv'},
+              {title: 'quotations', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=634864725&single=true&output=tsv'},
+              {title: 'famous people', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1414675033&single=true&output=tsv'}
+            ]
+          },
+          chosenPrompt: {
+            type: Object,
+            computed: 'choosePrompt(promptChoices, itemIndex)'
+          }
+        }
+      }
+      choosePrompt(promptChoices, itemIndex) {
+        return promptChoices[itemIndex];
+      }
     }
     // Register the new element with the browser
     customElements.define(PromptApp.is, PromptApp);
