@@ -17,20 +17,32 @@
       paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+      paper-item {
+        cursor: pointer;
+      }
     </style>
-    <app-header-layout>
-      <app-header slot="header" reveals>
-        <app-toolbar>
-          <div main-title>Impromptu Prompts</div>
-        </app-toolbar>
-      </app-header>
-    </app-header-layout>
-    <paper-listbox attr-for-selected="item-index" selected="{{itemIndex}}" fallback-selection="0">
-      <template is="dom-repeat" items="[[promptChoices]]">
-        <paper-item item-index="[[index]]">[[item.title]]</paper-item>
-      </template>
-    </paper-listbox>
-    <prompt-choices title="[[chosenPrompt.title]]" tsv-url="[[chosenPrompt.tsvUrl]]"></prompt-choices>
+    <app-drawer-layout>
+      <app-drawer slot="drawer" swipe-open>
+        <app-toolbar>Topics</app-toolbar>
+        <paper-listbox attr-for-selected="item-index" selected="{{itemIndex}}" fallback-selection="">
+          <template is="dom-repeat" items="[[promptChoices]]">
+            <paper-item item-index="[[index]]">[[item.title]]</paper-item>
+          </template>
+        </paper-listbox>
+      </app-drawer>
+      <app-header-layout>
+        <app-header slot="header" reveals>
+          <app-toolbar>
+            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+            <div>[[pageTitle]]</div>
+          </app-toolbar>
+        </app-header>
+        <prompt-choices title="[[chosenPrompt.title]]" tsv-url="[[chosenPrompt.tsvUrl]]"></prompt-choices>
+      </app-header-layout>
+    </app-drawer-layout>
   </template>
 
   <script>
@@ -45,22 +57,34 @@
           promptChoices: {
             type: Array,
             value: [
-              {title: 'proverbs', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=0&single=true&output=tsv'},
-              {title: 'objects', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=2103952916&single=true&output=tsv'},
-              {title: 'abstract words', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1125296434&single=true&output=tsv'},
-              {title: 'events', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1547289887&single=true&output=tsv'},
-              {title: 'quotations', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=634864725&single=true&output=tsv'},
-              {title: 'famous people', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1414675033&single=true&output=tsv'}
+              {title: 'Proverbs', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=0&single=true&output=tsv'},
+              {title: 'Objects', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=2103952916&single=true&output=tsv'},
+              {title: 'Abstract Words', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1125296434&single=true&output=tsv'},
+              {title: 'Events', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1547289887&single=true&output=tsv'},
+              {title: 'Quotations', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=634864725&single=true&output=tsv'},
+              {title: 'Famous People', tsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRmsmvzf-HXkK34x_JycrwD6n6uGlDdDZGGo0BvjrOgAH4Gc5aVVoCxsGmJOSM1GivhrXEkmqkuw1/pub?gid=1414675033&single=true&output=tsv'}
             ]
           },
           chosenPrompt: {
             type: Object,
             computed: 'choosePrompt(promptChoices, itemIndex)'
+          },
+          pageTitle: {
+            type: String,
+            value: 'Select a topic',
+            computed: 'getPageTitle(chosenPrompt)'
           }
         }
       }
-      choosePrompt(promptChoices, itemIndex) {
-        return promptChoices[itemIndex];
+      choosePrompt() {
+        return this.promptChoices[this.itemIndex];
+      }
+      getPageTitle(prompt) {
+        let result = "Select a topic";
+        if (prompt) {
+          result = prompt.title;
+        }
+        return result;
       }
     }
     // Register the new element with the browser

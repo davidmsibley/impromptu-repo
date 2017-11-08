@@ -1,17 +1,32 @@
 <link rel="import" href="//polygit.org/components/polymer/polymer-element.html">
 <link rel="import" href="//polygit.org/components/iron-ajax/iron-ajax.html">
+<link rel="import" href="//polygit.org/components/paper-item/paper-item.html">
+<link rel="import" href="//polygit.org/components/paper-spinner/paper-spinner.html">
 
 <dom-module id="prompt-choices">
   <template>
-    <h2>{{title}}</h2>
+    <style>
+      paper-spinner[aria-hidden] {
+        display: none;
+      }
+      paper-spinner:not([aria-hidden]) {
+        display: inline-block;
+      }
+      paper-item {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+    </style>
     <iron-ajax
     auto
     url="[[tsvUrl]]"
     handle-as="text"
     on-response="handleResponse"
-    debounce-duration="300"></iron-ajax>
+    debounce-duration="300"
+    loading="{{isLoading}}"></iron-ajax>
+    <paper-spinner active="[[isLoading]]"></paper-spinner>
     <template is="dom-repeat" items="[[prompts]]" as="prompt">
-      <div>[[prompt]]</div>
+      <paper-item heading="[[prompt]]">[[prompt]]</paper-item>
     </template>
   </template>
 
