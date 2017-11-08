@@ -14,6 +14,10 @@
         background-color: #00897B;
         color: #fff;
       }
+      app-header a {
+        text-decoration: inherit;
+        color: inherit;
+      }
       paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
@@ -37,7 +41,8 @@
         <app-header slot="header" reveals>
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div>[[pageTitle]]</div>
+            <div main-title>[[pageTitle]]</div>
+            <a href="https://goo.gl/forms/z67mEPTBsPeI4YEE2" tabindex="-1"><paper-icon-button icon="add"></paper-icon-button></a>
           </app-toolbar>
         </app-header>
         <prompt-choices title="[[chosenPrompt.title]]" tsv-url="[[chosenPrompt.tsvUrl]]"></prompt-choices>
