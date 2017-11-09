@@ -1,7 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+
+<link rel="import" href="prompt-service.html">
 
 <dom-module id="prompt-choices">
   <template>
@@ -17,17 +18,13 @@
         margin-bottom: 1rem;
       }
     </style>
-    <iron-ajax
-    auto
-    url="[[tsvUrl]]"
-    handle-as="text"
-    on-response="handleResponse"
-    debounce-duration="300"
-    loading="{{isLoading}}"></iron-ajax>
+    <prompt-service tsv-url="[[tsvUrl]]" last-result="{{prompts}}" loading="{{isLoading}}"></prompt-service>
     <paper-spinner active="[[isLoading]]"></paper-spinner>
-    <template is="dom-repeat" items="[[prompts]]" as="prompt">
-      <paper-item heading="[[prompt]]">[[prompt]]</paper-item>
-    </template>
+    <div hidden="[[isLoading]]">
+      <template is="dom-repeat" items="[[randomSelection]]" as="prompt">
+        <paper-item heading="[[prompt]]">[[prompt]]</paper-item>
+      </template>
+    </div>
   </template>
 
   <script>
@@ -44,25 +41,36 @@
           },
           prompts: {
             type: Array,
-            value: []
+            value: [],
+            observer: '_refresh'
+          },
+          refresh: {
+            type: Boolean,
+            notify: true,
+            observer: '_refresh'
           }
         }
       }
-      handleResponse(event) {
+      randomize(length, prompts) {
         let result = [];
-        let respArray = event.detail.response.split('\n');
-
-        let i = 3;
-        while (respArray.length > i && i-- > 0) {
-          let prompt = respArray[Math.floor(Math.random() * 1000) % respArray.length];
+        let i = length;
+        while (prompts.length > i && i-- > 0) {
+          let prompt = prompts[Math.floor(Math.random() * 1000) % prompts.length];
           if (result.includes(prompt)) {
             i++;
           } else {
             result.push(prompt);
           }
         }
-
-        this.set('prompts', result);
+        return result;
+      }
+      _refresh(newValue) {
+        if (newValue) {
+          this.setProperties({
+            randomSelection: this.randomize(3, this.prompts),
+            refresh: false
+          });
+        }
       }
     }
     // Register the new element with the browser

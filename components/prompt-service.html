@@ -1,0 +1,57 @@
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="prompt-service">
+  <template>
+    <iron-ajax
+    auto
+    url="[[tsvUrl]]"
+    handle-as="text"
+    last-response="{{lastResponse}}"
+    debounce-duration="300"
+    loading="{{isRequesting}}"></iron-ajax>
+  </template>
+  <script>
+  class PromptService extends Polymer.Element {
+    static get is() { return "prompt-service"; }
+    static get properties() {
+      return {
+        loading: {
+          type: Boolean,
+          notify: true
+        },
+        isRequesting: {
+          type: Boolean,
+          observer: '_loading'
+        },
+        tsvUrl: {
+          type: String,
+          observer: '_loading'
+        },
+        lastResult: {
+          type: Array,
+          notify: true,
+          computed: 'getLastResult(lastResponse)'
+        }
+      }
+    }
+    getLastResult(resp) {
+      let result = [];
+      
+      if (resp) {
+        result = resp.split('\n');
+      }
+      
+      return result;
+    }
+    _loading(newValue, oldValue) {
+      let result = true;
+      if (!newValue && oldValue) {
+        result = false;
+      }
+      this.setProperties({loading: result});
+    }
+  }
+  // Register the new element with the browser
+  customElements.define(PromptService.is, PromptService);
+  </script>
+</dom-module>

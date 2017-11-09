@@ -42,10 +42,11 @@
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div main-title>[[pageTitle]]</div>
+            <paper-icon-button icon="refresh" on-tap="_refreshPage"></paper-icon-button>
             <a href="https://goo.gl/forms/z67mEPTBsPeI4YEE2" tabindex="-1"><paper-icon-button icon="add"></paper-icon-button></a>
           </app-toolbar>
         </app-header>
-        <prompt-choices title="[[chosenPrompt.title]]" tsv-url="[[chosenPrompt.tsvUrl]]"></prompt-choices>
+        <prompt-choices title="[[chosenPrompt.title]]" tsv-url="[[chosenPrompt.tsvUrl]]" refresh="{{refreshChoices}}"></prompt-choices>
       </app-header-layout>
     </app-drawer-layout>
   </template>
@@ -85,11 +86,14 @@
         return this.promptChoices[this.itemIndex];
       }
       getPageTitle(prompt) {
-        let result = "Select a topic";
+        let result = null;
         if (prompt) {
           result = prompt.title;
         }
         return result;
+      }
+      _refreshPage() {
+        this.set('refreshChoices', true);
       }
     }
     // Register the new element with the browser
