@@ -33,7 +33,7 @@
         <app-toolbar>Genres</app-toolbar>
         <paper-listbox attr-for-selected="item-index" selected="{{itemIndex}}" fallback-selection="">
           <template is="dom-repeat" items="[[promptChoices]]">
-            <paper-item item-index="[[index]]" on-tap="_closeDrawer">[[item.title]]</paper-item>
+            <paper-item item-index="[[index]]">[[item.title]]</paper-item>
           </template>
         </paper-listbox>
       </app-drawer>
@@ -58,7 +58,8 @@
       static get properties() {
         return {
           itemIndex: {
-            type: Number
+            type: Number,
+            observer: '_closeDrawer'
           },
           promptChoices: {
             type: Array,
