@@ -29,11 +29,11 @@
       }
     </style>
     <app-drawer-layout>
-      <app-drawer slot="drawer" swipe-open>
-        <app-toolbar>Topics</app-toolbar>
+      <app-drawer class="genre-drawer" slot="drawer" swipe-open>
+        <app-toolbar>Genres</app-toolbar>
         <paper-listbox attr-for-selected="item-index" selected="{{itemIndex}}" fallback-selection="">
           <template is="dom-repeat" items="[[promptChoices]]">
-            <paper-item item-index="[[index]]">[[item.title]]</paper-item>
+            <paper-item item-index="[[index]]" on-tap="_closeDrawer">[[item.title]]</paper-item>
           </template>
         </paper-listbox>
       </app-drawer>
@@ -77,7 +77,7 @@
           },
           pageTitle: {
             type: String,
-            value: 'Select a topic',
+            value: 'Select a genre',
             computed: 'getPageTitle(chosenPrompt)'
           }
         }
@@ -94,6 +94,12 @@
       }
       _refreshPage() {
         this.set('refreshChoices', true);
+      }
+      _closeDrawer() {
+        let drawer = this.root.querySelector('app-drawer-layout[narrow] .genre-drawer');
+        if (drawer) {
+          drawer.toggle();
+        }
       }
     }
     // Register the new element with the browser
